@@ -1,3 +1,5 @@
+// CUBE GAME //
+
 var context, controller, rectangle, loop;
 
 context = document.querySelector("canvas").getContext("2d");

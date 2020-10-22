@@ -1,10 +1,9 @@
 // CUBE GAME //
 //    authors:
-// Corey Zaher 
+// Corey Zaher
+// Trent McGinnis
 //
 //
-//
-
 
 var context, controller, rectangle, loop;
 

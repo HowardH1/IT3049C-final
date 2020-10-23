@@ -16,9 +16,9 @@ rectangle = {
   height: 32,
   jumping: true,
   width: 32,
-  x: 144, // center of the canvas
+  x: context.canvas.width * 0.01, // center of the canvas
   x_velocity: 0,
-  y: 0,
+  y: context.canvas.height,
   y_velocity: 0,
 };
 
@@ -55,9 +55,9 @@ controller = {
   },
 };
 
-loop = function () {
+function loop() {
   if (controller.up && rectangle.jumping == false) {
-    rectangle.y_velocity -= 20;
+    rectangle.y_velocity -= 30;
     rectangle.jumping = true;
   }
 
@@ -69,11 +69,11 @@ loop = function () {
     rectangle.x_velocity += 0.5;
   }
 
-  rectangle.y_velocity += 1.5; // gravity
+  rectangle.y_velocity += 1.1; // gravity
   rectangle.x += rectangle.x_velocity;
   rectangle.y += rectangle.y_velocity;
-  rectangle.x_velocity *= 0.95; // friction
-  rectangle.y_velocity *= 0.95; // friction
+  rectangle.x_velocity *= 0.92; // friction
+  rectangle.y_velocity *= 0.92; // friction
 
   // if rectangle is falling below floor line
   if (rectangle.y > context.canvas.height - 16 - 32) {
@@ -103,15 +103,14 @@ loop = function () {
   context.moveTo(0, context.canvas.height - 16);
   context.lineTo(context.canvas.width, context.canvas.height - 16);
   context.stroke();
-
-  // call update when the browser is ready to draw again
-  window.requestAnimationFrame(loop);
 };
 
 window.addEventListener("keydown", controller.keyListener);
 window.addEventListener("keyup", controller.keyListener);
-window.requestAnimationFrame(loop);
 window.addEventListener("resize", () => {
   context.canvas.height = window.innerHeight - window.innerHeight * 0.1;
   context.canvas.width = window.innerWidth - window.innerWidth * 0.1;
 });
+
+//draws a frame every 10ms
+setInterval(loop,10);

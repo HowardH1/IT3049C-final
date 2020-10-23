@@ -5,12 +5,12 @@
 //
 //
 
-var context, controller, rectangle, loop;
+var context, controller, rectangle, loop
 
-context = document.querySelector("canvas").getContext("2d");
+context = document.querySelector("canvas").getContext("2d")
 
-context.canvas.height = window.innerHeight - window.innerHeight * 0.1;
-context.canvas.width = window.innerWidth - window.innerWidth * 0.1;
+context.canvas.height = window.innerHeight - window.innerHeight * 0.1
+context.canvas.width = window.innerWidth - window.innerWidth * 0.1
 
 rectangle = {
   height: 32,
@@ -20,97 +20,104 @@ rectangle = {
   x_velocity: 0,
   y: context.canvas.height,
   y_velocity: 0,
-};
+}
 
 controller = {
   left: false,
   right: false,
   up: false,
   keyListener: function (event) {
-    var key_state = event.type == "keydown" ? true : false;
+    var key_state = event.type == "keydown" ? true : false
 
     switch (event.keyCode) {
       case 37: // left key
-        controller.left = key_state;
-        break;
+        controller.left = key_state
+        break
       case 65: // a key
-        controller.left = key_state;
-        break;
+        controller.left = key_state
+        break
       case 38: // up key
-        controller.up = key_state;
-        break;
+        controller.up = key_state
+        break
       case 32: // spacebar
-        controller.up = key_state;
-        break;
+        controller.up = key_state
+        break
       case 87: // w key
-        controller.up = key_state;
-        break;
+        controller.up = key_state
+        break
       case 39: // right key
-        controller.right = key_state;
-        break;
+        controller.right = key_state
+        break
       case 68: // d key
-        controller.right = key_state;
-        break;
+        controller.right = key_state
+        break
     }
   },
-};
+}
 
 function loop() {
+
   if (controller.up && rectangle.jumping == false) {
-    rectangle.y_velocity -= 30;
-    rectangle.jumping = true;
+    rectangle.y_velocity -= 30
+    rectangle.jumping = true
   }
 
   if (controller.left) {
-    rectangle.x_velocity -= 0.5;
+    rectangle.x_velocity -= 0.5
   }
 
   if (controller.right) {
-    rectangle.x_velocity += 0.5;
+    rectangle.x_velocity += 0.5
   }
 
-  rectangle.y_velocity += 1.1; // gravity
-  rectangle.x += rectangle.x_velocity;
-  rectangle.y += rectangle.y_velocity;
-  rectangle.x_velocity *= 0.92; // friction
-  rectangle.y_velocity *= 0.92; // friction
+  rectangle.y_velocity += 1.1 // gravity
+  rectangle.x += rectangle.x_velocity
+  rectangle.y += rectangle.y_velocity
+  rectangle.x_velocity *= 0.92 // friction
+  rectangle.y_velocity *= 0.92 // friction
 
   // if rectangle is falling below floor line
   if (rectangle.y > context.canvas.height - 16 - 32) {
-    rectangle.jumping = false;
-    rectangle.y = context.canvas.height - 16 - 32;
-    rectangle.y_velocity = 0;
+    rectangle.jumping = false
+    rectangle.y = context.canvas.height - 16 - 32
+    rectangle.y_velocity = 0
   }
 
   // if rectangle is going off the left of the screen
   if (rectangle.x < -32) {
-    rectangle.x = context.canvas.width;
+    rectangle.x = context.canvas.width
   } else if (rectangle.x > context.canvas.width) {
     // if rectangle goes past right boundary
 
-    rectangle.x = -32;
+    rectangle.x = -32
   }
 
-  context.fillStyle = "#202020"; // game window bg color
-  context.fillRect(0, 0, context.canvas.width, context.canvas.height); // x, y, width, height
-  context.fillStyle = " #fe8019"; // player color
-  context.beginPath();
-  context.rect(rectangle.x, rectangle.y, rectangle.width, rectangle.height);
-  context.fill();
-  context.strokeStyle = "#fbf1c7"; // platform color
-  context.lineWidth = 4;
-  context.beginPath();
-  context.moveTo(0, context.canvas.height - 16);
-  context.lineTo(context.canvas.width, context.canvas.height - 16);
-  context.stroke();
-};
+  context.fillStyle = "#202020" // game window bg color
+  context.fillRect(0, 0, context.canvas.width, context.canvas.height) // x, y, width, height
+  context.fillStyle = " #fe8019" // player color
+  context.beginPath()
+  context.rect(rectangle.x, rectangle.y, rectangle.width, rectangle.height)
+  context.fill()
+  context.strokeStyle = "#fbf1c7" // platform color
+  context.lineWidth = 4
+  context.beginPath()
+  context.moveTo(0, context.canvas.height - 16)
+  context.lineTo(context.canvas.width, context.canvas.height - 16)
+  context.stroke()
+}
 
-window.addEventListener("keydown", controller.keyListener);
-window.addEventListener("keyup", controller.keyListener);
+function rgbToHex(r, g, b) {
+  if (r > 255 || g > 255 || b > 255)
+      throw "Invalid color component"
+  return ((r << 16) | (g << 8) | b).toString(16)
+}
+
+window.addEventListener("keydown", controller.keyListener)
+window.addEventListener("keyup", controller.keyListener)
 window.addEventListener("resize", () => {
-  context.canvas.height = window.innerHeight - window.innerHeight * 0.1;
-  context.canvas.width = window.innerWidth - window.innerWidth * 0.1;
-});
+  context.canvas.height = window.innerHeight - window.innerHeight * 0.1
+  context.canvas.width = window.innerWidth - window.innerWidth * 0.1
+})
 
 //draws a frame every 10ms
-setInterval(loop,10);
+setInterval(loop,20)

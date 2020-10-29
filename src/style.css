@@ -18,7 +18,7 @@
   
     align-content:space-around;
     background-color:#33302b;
-    color:#ffffff;
+    /* color:#ffffff; */
     display:grid;
     justify-content:center;
   
@@ -26,6 +26,6 @@
   
   canvas {
   
-    background-color:#ffffff;
+    /* background-color:#ffffff; */
   
   }

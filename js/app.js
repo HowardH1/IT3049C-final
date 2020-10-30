@@ -142,7 +142,7 @@ function gameLoop(){
     player.y_velocity = 0
   }
 
-  // is player in leftmost room
+  // player is in leftmost room
   if (player.inRoom == 1){
     // left boundary
     if (player.x < 18 ){
@@ -155,7 +155,7 @@ function gameLoop(){
     }
   } 
 
-  // is player in rightmost room
+  // player is in rightmost room
   else if (player.inRoom == rooms){
     // left boundary
     if (player.x < 0 ){
@@ -168,7 +168,7 @@ function gameLoop(){
     }
   } 
 
-  //player is in middle rooms
+  // player is in middle rooms
   else{
     // if player goes past left boundary
     if (player.x < 0 ){
@@ -182,7 +182,7 @@ function gameLoop(){
     }
   }
 
-  console.log("player is in room #" + player.inRoom)
+  // console.log("player is in room #" + player.inRoom)
 }
 
 window.addEventListener("keydown", controller.keyListener)

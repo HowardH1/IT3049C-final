@@ -1,28 +1,65 @@
-let app;
+let app
+let playerSheet = {}
+let speed = 2
 
 window.onload = function () {
   app = new PIXI.Application({
-    width: 1080,
-    height: 720,
+    width: 400,
+    height: 400,
     backgroundColor: 0xebdbb2,
   });
 
   document.body.appendChild(app.view);
 
-  player = new PIXI.Sprite.from("images/hulk64.png");
-  player.anchor.set(0.5);
-  player.x = app.view.width * 0.05,  // spawns player at bottom left of screen
-  player.y = app.view.height - 40, //^^
-  player.x_velocity = 0,
-  player.y_velocity = 0,
-  player.jumping = false
+  // player = new PIXI.Sprite.from("images/hulk64.png");
+  // player.anchor.set(0.5);
+  // player.x = app.view.width * 0.05,  // spawns player at bottom left of screen
+  // player.y = app.view.height - 40, //^^
+  // player.x_velocity = 0,
+  // player.y_velocity = 0,
+  // player.jumping = false
+  // app.stage.addChild(player);
 
+  app.loader.add("player", "images/skeleton64x.png")
+  app.loader.load(doneLoading)
+  
+}
 
-  app.stage.addChild(player);
-  window.addEventListener("keydown", controller.keyListener)
-  window.addEventListener("keyup", controller.keyListener)
-
+function doneLoading(){
+  createPlayerSheet()
+  createPlayer()
   app.ticker.add(gameLoop)
+}
+
+function createPlayerSheet(){
+  let spriteSheet = new PIXI.BaseTexture.from(app.loader.resources["player"].url)
+  let w = 64
+  let h = 64
+  let numFrames = 4
+
+  playerSheet["standIdle"] = [
+    new PIXI.Texture(spriteSheet, new PIXI.Rectangle(1 * w, 0, w, h))
+  ]
+
+  playerSheet["walking"] = [
+    new PIXI.Texture(spriteSheet, new PIXI.Rectangle(0 * w, 0, w, h)),
+    new PIXI.Texture(spriteSheet, new PIXI.Rectangle(1 * w, 0, w, h)),
+    new PIXI.Texture(spriteSheet, new PIXI.Rectangle(2 * w, 0, w, h)),
+    new PIXI.Texture(spriteSheet, new PIXI.Rectangle(3 * w, 0, w, h))
+  ]
+}
+
+function createPlayer(){
+  player = new PIXI.AnimatedSprite(playerSheet.standIdle)
+  player.anchor.set(0.5)
+  player.animationSpeed = 0.1
+  player.loop = false
+  player.x = app.view.width * 0.05  // spawns player at bottom left of screen
+  player.y = app.view.height - 40 //^^
+  player.x_velocity = 0
+  player.y_velocity = 0
+  player.jumping = false
+  app.stage.addChild(player)
 }
 
 controller = {
@@ -68,16 +105,24 @@ controller = {
 function gameLoop(){
 
   if (controller.up && player.jumping == false) {
-    player.y_velocity -= 25
+    player.y_velocity -= 10
     player.jumping = true
   }
 
   if (controller.left) {
+    if(!player.playing){
+      player.textures = playerSheet.walking
+      player.play();
+    }
     player.x_velocity -= 0.4
     player.scale.x = -1
   }
 
   if (controller.right) {
+    if(!player.playing){
+      player.textures = playerSheet.walking
+      player.play();
+    }
     player.x_velocity += 0.4
     player.scale.x = 1
   }
@@ -89,9 +134,9 @@ function gameLoop(){
   player.y_velocity *= 0.92 // friction
 
   // if player is falling below window
-  if (player.y > app.view.height - 40 ) {
+  if (player.y > app.view.height - 32 ) {
     player.jumping = false
-    player.y = app.view.height - 40
+    player.y = app.view.height - 32
     player.y_velocity = 0
   }
 
@@ -103,3 +148,6 @@ function gameLoop(){
     player.x = 0
   }
 }
+
+window.addEventListener("keydown", controller.keyListener)
+window.addEventListener("keyup", controller.keyListener)

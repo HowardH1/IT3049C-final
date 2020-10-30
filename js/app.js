@@ -2,8 +2,8 @@ let app;
 
 window.onload = function () {
   app = new PIXI.Application({
-    width: 800,
-    height: 600,
+    width: 1080,
+    height: 720,
     backgroundColor: 0xebdbb2,
   });
 

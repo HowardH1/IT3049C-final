@@ -9,12 +9,10 @@ window.onload = function () {
     width: 1200,
     height: 600,
     backgroundColor: 0xebdbb2,
-  });
-
-  document.body.appendChild(app.view);
+  })
+  document.body.appendChild(app.view)
   app.loader.add("player", "images/skeleton64x.png")
   app.loader.load(doneLoading)
-  
 }
 
 function doneLoading(){
@@ -98,7 +96,7 @@ function gameLoop(){
   if (controller.left) {
     if(!player.playing){
       player.textures = playerSheet.walking
-      player.play();
+      player.play()
     }
     player.x_velocity -= 0.4
     player.scale.x = -1
@@ -107,7 +105,7 @@ function gameLoop(){
   if (controller.right) {
     if(!player.playing){
       player.textures = playerSheet.walking
-      player.play();
+      player.play()
     }
     player.x_velocity += 0.4
     player.scale.x = 1

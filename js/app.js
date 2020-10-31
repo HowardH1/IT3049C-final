@@ -12,16 +12,6 @@ window.onload = function () {
   });
 
   document.body.appendChild(app.view);
-
-  // player = new PIXI.Sprite.from("images/hulk64.png");
-  // player.anchor.set(0.5);
-  // player.x = app.view.width * 0.05,  // spawns player at bottom left of screen
-  // player.y = app.view.height - 40, //^^
-  // player.x_velocity = 0,
-  // player.y_velocity = 0,
-  // player.jumping = false
-  // app.stage.addChild(player);
-
   app.loader.add("player", "images/skeleton64x.png")
   app.loader.load(doneLoading)
   
@@ -75,31 +65,24 @@ controller = {
     switch (event.keyCode) {
       case 37: // left key
         controller.left = key_state
-        // console.log(controller)
         break
       case 65: // a key
         controller.left = key_state
-        // console.log(controller)
         break
       case 38: // up key
         controller.up = key_state
-        // console.log(controller)
         break
       case 32: // spacebar
         controller.up = key_state
-        // console.log(controller)
         break
       case 87: // w key
         controller.up = key_state
-        // console.log(controller)
         break
       case 39: // right key
         controller.right = key_state
-        // console.log(controller)
         break
       case 68: // d key
         controller.right = key_state
-        // console.log(controller)
         break
     }
   }

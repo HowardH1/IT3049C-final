@@ -2,11 +2,12 @@ let app
 let playerSheet = {}
 let speed = 2
 let rooms = 3
+let ticker = PIXI.Ticker.shared
 
 window.onload = function () {
   app = new PIXI.Application({
-    width: 400,
-    height: 400,
+    width: 1200,
+    height: 600,
     backgroundColor: 0xebdbb2,
   });
 
@@ -107,7 +108,7 @@ controller = {
 function gameLoop(){
 
   if (controller.up && player.jumping == false) {
-    player.y_velocity -= 10
+    player.y_velocity -= 20
     player.jumping = true
   }
 

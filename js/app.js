@@ -11,27 +11,28 @@ window.onload = function () {
     backgroundColor: 0xebdbb2,
   })
   document.body.appendChild(app.view)
-  app.loader.add("player", "images/skeleton64x.png")
+  app.loader.add('player', 'images/skeleton64x.png')
   app.loader.load(doneLoading)
 }
 
 function doneLoading(){
   createPlayerSheet()
   createPlayer()
+  createRoom()
   app.ticker.add(gameLoop)
 }
 
 function createPlayerSheet(){
-  let spriteSheet = new PIXI.BaseTexture.from(app.loader.resources["player"].url)
+  let spriteSheet = new PIXI.BaseTexture.from(app.loader.resources['player'].url)
   let w = 64
   let h = 64
   let numFrames = 4
 
-  playerSheet["standIdle"] = [
+  playerSheet['standIdle'] = [
     new PIXI.Texture(spriteSheet, new PIXI.Rectangle(1 * w, 0, w, h))
   ]
 
-  playerSheet["walking"] = [
+  playerSheet['walking'] = [
     new PIXI.Texture(spriteSheet, new PIXI.Rectangle(0 * w, 0, w, h)),
     new PIXI.Texture(spriteSheet, new PIXI.Rectangle(1 * w, 0, w, h)),
     new PIXI.Texture(spriteSheet, new PIXI.Rectangle(2 * w, 0, w, h)),
@@ -53,12 +54,40 @@ function createPlayer(){
   app.stage.addChild(player)
 }
 
+function createRoom(){
+  switch (player.inRoom) {
+    case 1:
+      indicator = PIXI.Sprite.from('images/1.png')
+      indicator.anchor.set(0.5)
+      indicator.x = app.view.width / 2
+      indicator.y = app.view.height / 2
+      app.stage.addChild(indicator)
+      break
+  
+    case 2:
+      indicator = PIXI.Sprite.from('images/2.png')
+      indicator.anchor.set(0.5)
+      indicator.x = app.view.width / 2
+      indicator.y = app.view.height / 2
+      app.stage.addChild(indicator)
+      break
+
+    case 3:
+      indicator = PIXI.Sprite.from('images/3.png')
+      indicator.anchor.set(0.5)
+      indicator.x = app.view.width / 2
+      indicator.y = app.view.height / 2
+      app.stage.addChild(indicator)
+      break
+  }
+}
+
 controller = {
   left: false,
   right: false,
   up: false,
   keyListener: function (event) {
-    var key_state = event.type == "keydown" ? true : false
+    var key_state = event.type == 'keydown' ? true : false
 
     switch (event.keyCode) {
       case 37: // left key
@@ -134,6 +163,8 @@ function gameLoop(){
     else if (player.x > app.view.width) {  
       player.inRoom+=1
       player.x = 0
+      app.stage.removeChild(indicator)
+      app.loader.load(createRoom)
     }
   } 
 
@@ -143,6 +174,8 @@ function gameLoop(){
     if (player.x < 0 ){
       player.inRoom-=1
       player.x = app.view.width
+      app.stage.removeChild(indicator)
+      app.loader.load(createRoom)
     }
     // right boundary
     else if (player.x > app.view.width - 18) {  
@@ -156,16 +189,20 @@ function gameLoop(){
     if (player.x < 0 ){
       player.inRoom-=1
       player.x = app.view.width
+      app.stage.removeChild(indicator)
+      app.loader.load(createRoom)
     } 
     // if player goes past right boundary
     else if (player.x > app.view.width) {  
       player.inRoom+=1
       player.x = 0
+      app.stage.removeChild(indicator)
+      app.loader.load(createRoom)
     }
   }
 
-  // console.log("player is in room #" + player.inRoom)
+  // console.log('player is in room #' + player.inRoom)
 }
 
-window.addEventListener("keydown", controller.keyListener)
-window.addEventListener("keyup", controller.keyListener)
+window.addEventListener('keydown', controller.keyListener)
+window.addEventListener('keyup', controller.keyListener)

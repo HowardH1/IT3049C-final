@@ -1,9 +1,11 @@
+//declare global variables here
+  //must declare spritesheets as global objects
 let app
 let playerSheet = {}
-let speed = 2
 let rooms = 3
 let ticker = PIXI.Ticker.shared
 
+//initial load function
 window.onload = function () {
   app = new PIXI.Application({
     width: 1200,
@@ -11,10 +13,14 @@ window.onload = function () {
     backgroundColor: 0xebdbb2,
   })
   document.body.appendChild(app.view)
+
+  //use this space to pre-load commonly used assets
   app.loader.add('player', 'images/skeleton64x.png')
+
   app.loader.load(doneLoading)
 }
 
+//use this function to call other startup functions after load
 function doneLoading(){
   createPlayerSheet()
   createPlayer()
@@ -22,6 +28,7 @@ function doneLoading(){
   app.ticker.add(gameLoop)
 }
 
+//player sprite properties here
 function createPlayerSheet(){
   let spriteSheet = new PIXI.BaseTexture.from(app.loader.resources['player'].url)
   let w = 64
@@ -40,6 +47,7 @@ function createPlayerSheet(){
   ]
 }
 
+//player properties here
 function createPlayer(){
   player = new PIXI.AnimatedSprite(playerSheet.standIdle)
   player.anchor.set(0.5)
@@ -54,69 +62,47 @@ function createPlayer(){
   app.stage.addChild(player)
 }
 
+//load objects for each room here
 function createRoom(){
   switch (player.inRoom) {
     case 1:
+      //create room indicator
+      {
       indicator = PIXI.Sprite.from('images/1.png')
       indicator.anchor.set(0.5)
       indicator.x = app.view.width / 2
       indicator.y = app.view.height / 2
       app.stage.addChild(indicator)
+      }
+
       break
   
     case 2:
+      //create room indicator
+      {
       indicator = PIXI.Sprite.from('images/2.png')
       indicator.anchor.set(0.5)
       indicator.x = app.view.width / 2
       indicator.y = app.view.height / 2
       app.stage.addChild(indicator)
+      }
       break
 
     case 3:
+      //create room indicator
+      {
       indicator = PIXI.Sprite.from('images/3.png')
       indicator.anchor.set(0.5)
       indicator.x = app.view.width / 2
       indicator.y = app.view.height / 2
       app.stage.addChild(indicator)
+      }
       break
   }
 }
 
-controller = {
-  left: false,
-  right: false,
-  up: false,
-  keyListener: function (event) {
-    var key_state = event.type == 'keydown' ? true : false
-
-    switch (event.keyCode) {
-      case 37: // left key
-        controller.left = key_state
-        break
-      case 65: // a key
-        controller.left = key_state
-        break
-      case 38: // up key
-        controller.up = key_state
-        break
-      case 32: // spacebar
-        controller.up = key_state
-        break
-      case 87: // w key
-        controller.up = key_state
-        break
-      case 39: // right key
-        controller.right = key_state
-        break
-      case 68: // d key
-        controller.right = key_state
-        break
-    }
-  }
-}
-
+//modify game properties here
 function gameLoop(){
-
   if (controller.up && player.jumping == false) {
     player.y_velocity -= 20
     player.jumping = true
@@ -204,5 +190,38 @@ function gameLoop(){
   // console.log('player is in room #' + player.inRoom)
 }
 
+//read keyboard input here
+controller = {
+  left: false,
+  right: false,
+  up: false,
+  keyListener: function (event) {
+    var key_state = event.type == 'keydown' ? true : false
+
+    switch (event.keyCode) {
+      case 37: // left key
+        controller.left = key_state
+        break
+      case 65: // a key
+        controller.left = key_state
+        break
+      case 38: // up key
+        controller.up = key_state
+        break
+      case 32: // spacebar
+        controller.up = key_state
+        break
+      case 87: // w key
+        controller.up = key_state
+        break
+      case 39: // right key
+        controller.right = key_state
+        break
+      case 68: // d key
+        controller.right = key_state
+        break
+    }
+  }
+}
 window.addEventListener('keydown', controller.keyListener)
 window.addEventListener('keyup', controller.keyListener)
